@@ -1,5 +1,5 @@
 # Tinkoff_Invest_Analitics
-Project for the development of software for analyzing the brokerage portfolio and operations of Tinkoff Investments clients.<br> Used by API Tinkoff Investments and official CDK
+Project for the development of software for analyzing the brokerage portfolio and operations of Tinkoff Investments clients.<br> Used by API Tinkoff Investments and official SDK
 <br>
 <br>
 Official pages: <br>

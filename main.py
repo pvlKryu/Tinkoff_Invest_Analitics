@@ -18,11 +18,11 @@ def main():
     ### To find your account ID use get_accounts (func. accounts) ###
 
     with Client(token_read_only_1) as client:
-        #print("Ваши брокерские счета: ")
+        #print("Your brokerage accounts: ")
         # accounts(client)
-        #print("Ваши операции: ")
+        #print("Your transactions: ")
         #operations(client, account_id)
-        print("Содержимое портфеля и его стоимость (по актуальным курсам): ")
+        print("Portfolio content and value (at current exchange rates): ")
         value(client, account_id)
 
 

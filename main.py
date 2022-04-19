@@ -13,18 +13,35 @@ https://github.com/Tinkoff/invest-python
 def main():
     token_read_only_1 = ""
     # Put your token in format "..."
-
     account_id = ""  # Put your account ID in format "..."
-
     ### To find your account ID use get_accounts (func. accounts) ###
 
+    answ = ""  # additional variable for switch-case construction
+
     with Client(token_read_only_1) as client:
-        #print("Your brokerage accounts: ")
-        # accounts(client)
-        #print("Your transactions: ")
-        #operations(client, account_id)
-        print("Portfolio content and value (at current exchange rates): ")
-        value(client, account_id)
+
+        while (answ != "4"):
+            print('\n', "What would you like to do? (Write: '1' / '2' / '3' / '4') ")
+            print("1) Watch your brokerage accounts ")
+            print("2) Watch your transactions ")
+            print(
+                "3) Watch your portfolio content and value (at current exchange rates) ")
+            print("4) exit ")
+            answ = input()
+            match answ:  # switch-case construction (for Python 3.10 and more)
+                case "1":
+                    print('\n', "Your brokerage accounts: ")
+                    accounts(client)
+                    breakpoint
+                case "2":
+                    print('\n', "Your transactions: ")
+                    operations(client, account_id)
+                    breakpoint
+                case "3":
+                    print(
+                        '\n', "Portfolio content and value (at current exchange rates): ")
+                    value(client, account_id)
+                    breakpoint
 
 
 def accounts(c):  # Show all brokerage accounts and their details

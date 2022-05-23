@@ -67,7 +67,6 @@ def main():
 def accounts(c):  # Show all brokerage accounts and their details
     r = c.users.get_accounts() 
     d = []
-   
 
     for acc in r.accounts:
         if acc.type == 0:
@@ -86,7 +85,7 @@ def accounts(c):  # Show all brokerage accounts and their details
             acc.closed_date = 'Not closed'
 
         if acc.status == 0:
-                acc.status = 'unknown'
+                acc.status = 'Unknown'
         elif acc.status == 1:
             acc.status = 'opening'
         elif acc.status == 2:
@@ -94,9 +93,8 @@ def accounts(c):  # Show all brokerage accounts and their details
         else:
             acc.status = 'Closed'
 
-        
         if acc.access_level == 0:
-                acc.access_level = 'unknown'
+                acc.access_level = 'Unknown'
         elif acc.access_level == 1:
             acc.access_level = 'Full access'
         elif acc.access_level == 2:
@@ -104,9 +102,7 @@ def accounts(c):  # Show all brokerage accounts and their details
         else:
             acc.access_level = 'No access'
         
-
         d.append(acc)
-
 
     d = pd.DataFrame(d, columns=('id', 'type', 'name', 'status', 'opened_date', 'closed_date', 'access_level'))
 
@@ -114,10 +110,30 @@ def accounts(c):  # Show all brokerage accounts and their details
 
 
 def operations(c, id):  # Display all operations on the brokerage account in the time interval
-    print(c.operations.get_operations(  # List of shares
+    r = c.operations.get_operations(
         account_id=id,
         from_=datetime.datetime(2021, 1, 1),
-        to=datetime.datetime.now()))
+        to=datetime.datetime.now())
+    
+    d = []
+
+    for op in r.operations:
+        op.payment = float(cost_money(op.payment))
+        op.price = float(cost_money(op.price))
+        #op.date = op.date.strftime('%B %d, %Y')
+
+        if op.state == 0:
+                op.state = 'Unknown'
+        elif op.state == 1:
+            op.state = 'Done'
+        else:
+            op.state = 'Cancelled'
+
+        d.append(op) 
+
+    d = pd.DataFrame(d, columns=('currency', 'payment', 'price', 'state', 'quantity_rest', 'figi', 'instrument_type', 'date', 'type'))
+
+    print(d)
 
 
 def value(c, id):  # Display portfolio contents and value
@@ -125,7 +141,7 @@ def value(c, id):  # Display portfolio contents and value
     p_response = {k: getattr(c.operations.get_portfolio(account_id=id), k) for k in keys1} 
     #type p_response - dict
     df1 = pd.DataFrame.from_dict(p_response, orient='index')
-    print('\n', '\t', 'General table:', '\n', df1)
+    print('General table:', '\n', df1)
     print()
     print('example: 5.540 rub = 5 units and 540000000 nano', '\n')
 
@@ -135,7 +151,7 @@ def value(c, id):  # Display portfolio contents and value
         #type(tmp) - list
         df2 = pd.DataFrame(tmp)
         table = df2.to_string(index=False)
-        print('\t', k, 'table:')
+        print(k, 'table:')
         print(table, '\n')
 
 

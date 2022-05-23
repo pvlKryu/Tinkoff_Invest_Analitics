@@ -1,5 +1,8 @@
 from datetime import datetime
-from tinkoff.invest import Client
+from tinkoff.invest import Client, RequestError, PositionsResponse, AccessLevel, OperationsResponse, Operation, \
+    OperationState, OperationType
+from tinkoff.invest.services import Services
+
 import datetime
 import pandas as pd
 
@@ -9,6 +12,9 @@ https://tinkoff.github.io/investAPI
 https://github.com/Tinkoff/invest-python
 """
 
+"""
+Добавить считывание токена от пользователя и авто получение его account_id
+"""
 
 def main():
     token_read_only_1 = ""
@@ -26,6 +32,7 @@ def main():
             print("2) Watch your transactions ")
             print("3) Watch your portfolio content and value (at current exchange rates) ")
             print("4) Portfolio basic statistics: ")
+            print("5) Broker report: ") #Not finished
             #...#
             print("0) exit ")
             answ = input()
@@ -49,9 +56,61 @@ def main():
                     basic_statistics(client, account_id)
                     breakpoint
 
+                case "5": #In procees 
+                    print(
+                        '\n', "Broker report: ")
+                    broker_report(client, account_id)
+                    breakpoint
+
+
 
 def accounts(c):  # Show all brokerage accounts and their details
-    print(c.users.get_accounts())
+    r = c.users.get_accounts() 
+    d = []
+   
+
+    for acc in r.accounts:
+        if acc.type == 0:
+            acc.type = 'Unknown'
+        elif acc.type == 1:
+            acc.type = 'Brokerage account'
+        elif acc.type == 2:
+            acc.type = 'IIS'
+        else:
+            acc.type = 'Investkopilka'
+
+        acc.opened_date = acc.opened_date.strftime('%B %d, %Y')
+        acc.closed_date = acc.closed_date.strftime('%B %d, %Y')
+
+        if (acc.closed_date == 'January 01, 1970'):
+            acc.closed_date = 'Not closed'
+
+        if acc.status == 0:
+                acc.status = 'unknown'
+        elif acc.status == 1:
+            acc.status = 'opening'
+        elif acc.status == 2:
+            acc.status = 'Opened'
+        else:
+            acc.status = 'Closed'
+
+        
+        if acc.access_level == 0:
+                acc.access_level = 'unknown'
+        elif acc.access_level == 1:
+            acc.access_level = 'Full access'
+        elif acc.access_level == 2:
+            acc.access_level = 'Reading only'
+        else:
+            acc.access_level = 'No access'
+        
+
+        d.append(acc)
+
+
+    d = pd.DataFrame(d, columns=('id', 'type', 'name', 'status', 'opened_date', 'closed_date', 'access_level'))
+
+    print(d)
 
 
 def operations(c, id):  # Display all operations on the brokerage account in the time interval
@@ -84,6 +143,21 @@ def basic_statistics(c, id):
     r = c.operations.get_portfolio(account_id=id)
     print(r)
 
+def broker_report(c, id):
+    # account_id = id
+    # from_= datetime.datetime(2022, 1, 1)
+    # to = datetime.datetime.now()
+    # task_id = c.operations.get_broker_report(account_id, from_, to)   
+    # task_id = '123'
+    # r = c.operations.get_broker_report(task_id)
+
+    # task_id = c.operations.generate_broker_report_request(account_id=id, from_=datetime.datetime(2022, 1, 1), to=datetime.datetime.now())
+    # # task_id = c.operations.get_broker_report(account_id=id, from_=datetime.datetime(2022, 1, 1), to=datetime.datetime.now())
+
+    # r = c.operations.get_broker_report_request(task_id)
+    # print(r)
+    pass
+ 
 
 def cost_money(m):  # Function to convert custom currency format to Float
     return (m.units + m.nano / 1e9)  # nano is 10^-9

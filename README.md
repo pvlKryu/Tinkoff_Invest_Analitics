@@ -20,6 +20,6 @@ A telegram chat bot will be made based on this software in the future.
 ### Your operations:<br>
 ![image](https://user-images.githubusercontent.com/57821178/169919258-451b8a2b-0b57-4bb9-a371-76baa7db17ea.png)
 ### Portfolio content and value:<br>
-![image](https://user-images.githubusercontent.com/57821178/169522471-f7dce81c-e159-4dd8-9b90-44909e8ee8d7.png)
+![image](https://user-images.githubusercontent.com/57821178/169930600-3231e46b-b7df-4d47-a459-734a083ef979.png)
 
 

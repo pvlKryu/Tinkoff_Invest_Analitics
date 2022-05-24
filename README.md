@@ -14,11 +14,11 @@ A telegram chat bot will be made based on this software in the future.
 
 ## Outpoot examples <br>
 ### Main menu:<br>
-![image](https://user-images.githubusercontent.com/57821178/169522408-d87bbd3b-1d38-44c2-a9c3-0e88c91657fd.png)
+![image](https://user-images.githubusercontent.com/57821178/170145106-388bd5c7-819d-47aa-878b-32d83fc810cf.png)
 ### Your brokerage accounts:<br>
 ![image](https://user-images.githubusercontent.com/57821178/169852442-20e1f48b-b1fc-4de6-b36c-9cfc5ce26200.png)
 ### Your operations:<br>
-![image](https://user-images.githubusercontent.com/57821178/169919258-451b8a2b-0b57-4bb9-a371-76baa7db17ea.png)
+![image](https://user-images.githubusercontent.com/57821178/170145169-958be575-039d-4f93-bd8b-920fe2e9985c.png)
 ### Portfolio content and value:<br>
 ![image](https://user-images.githubusercontent.com/57821178/169930600-3231e46b-b7df-4d47-a459-734a083ef979.png)
 

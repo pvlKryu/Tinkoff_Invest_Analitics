@@ -20,7 +20,7 @@ def main():
     token_read_only_1 = ""
     # Put your token in format "..."
     account_id = ""  # Put your account ID in format "..."
-    ### To find your account ID use get_accounts (func. accounts) ###
+    ### To find your account ID use get_accounts (func. accounts 1) ) ###
 
     answ = ""  # additional variable for switch-case construction
 
@@ -28,7 +28,7 @@ def main():
 
         while (answ != "0"):
             print('\n', "What would you like to do? (Write: '1' / '2' / '3' / '4') ")
-            print("1) Watch your brokerage accounts ")
+            print("1) Watch your brokerage accounts (+ID's) ")
             print("2) Watch your transactions ")
             print("3) Watch your portfolio content and value (at current exchange rates) ")
             print("4) Portfolio basic statistics: ")
@@ -47,7 +47,7 @@ def main():
                     breakpoint
                 case "3":
                     print(
-                        '\n', "Portfolio content and value: ")
+                        '\n', "Portfolio content and value: ", '\n')
                     value(client, account_id)
                     breakpoint
                 case "4":
@@ -120,7 +120,6 @@ def operations(c, id):  # Display all operations on the brokerage account in the
     for op in r.operations:
         op.payment = float(cost_money(op.payment))
         op.price = float(cost_money(op.price))
-        #op.date = op.date.strftime('%B %d, %Y')
 
         if op.state == 0:
                 op.state = 'Unknown'
@@ -137,41 +136,36 @@ def operations(c, id):  # Display all operations on the brokerage account in the
 
 
 def value(c, id):  # Display portfolio contents and value
+    d = {}
+    r = c.operations.get_portfolio(account_id=id)
     keys1 = ['total_amount_shares', 'total_amount_bonds', 'total_amount_etf', 'total_amount_currencies', 'total_amount_futures']
-    p_response = {k: getattr(c.operations.get_portfolio(account_id=id), k) for k in keys1} 
+    p_response = {k: getattr(r, k) for k in keys1} 
     #type p_response - dict
-    df1 = pd.DataFrame.from_dict(p_response, orient='index')
-    print('General table:', '\n', df1)
-    print()
-    print('example: 5.540 rub = 5 units and 540000000 nano', '\n')
+    for keys1 in p_response:
+        p_response[keys1] = cost_money(p_response[keys1])
+        d[keys1] = p_response[keys1]
 
-    keys2 = ['money', 'securities']
+    d = pd.DataFrame.from_dict(d, orient='index', columns=['Total cost (rub)'])
+
+    print('General table:', '\n', d, '\n')
+
+    p = c.operations.get_positions(account_id=id)
+    keys2 = ['securities', 'money']
     for k in keys2:
-        tmp = getattr(c.operations.get_positions(account_id=id), k)
+        tmp = getattr(p, k)
         #type(tmp) - list
         df2 = pd.DataFrame(tmp)
         table = df2.to_string(index=False)
+        print()
         print(k, 'table:')
         print(table, '\n')
-
+    #Перевести денежный формат в money table
 
 def basic_statistics(c, id):
     r = c.operations.get_portfolio(account_id=id)
     print(r)
 
 def broker_report(c, id):
-    # account_id = id
-    # from_= datetime.datetime(2022, 1, 1)
-    # to = datetime.datetime.now()
-    # task_id = c.operations.get_broker_report(account_id, from_, to)   
-    # task_id = '123'
-    # r = c.operations.get_broker_report(task_id)
-
-    # task_id = c.operations.generate_broker_report_request(account_id=id, from_=datetime.datetime(2022, 1, 1), to=datetime.datetime.now())
-    # # task_id = c.operations.get_broker_report(account_id=id, from_=datetime.datetime(2022, 1, 1), to=datetime.datetime.now())
-
-    # r = c.operations.get_broker_report_request(task_id)
-    # print(r)
     pass
  
 
